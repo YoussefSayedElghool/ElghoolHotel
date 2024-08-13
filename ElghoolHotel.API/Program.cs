@@ -67,6 +67,7 @@ namespace ElghoolHotel.API
                 };
             });
 
+            builder.Services.AddAutoMapper(typeof(Program));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -86,6 +87,7 @@ namespace ElghoolHotel.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
