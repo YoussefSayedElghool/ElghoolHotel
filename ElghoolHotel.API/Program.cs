@@ -32,7 +32,6 @@ namespace ElghoolHotel.API
 
             builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             // Register 
-            builder.Services.AddScoped<IAccountingService, AccountingService>();
             builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             builder.Services.AddScoped<ISliderRepository, SliderRepository>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
@@ -67,6 +66,7 @@ namespace ElghoolHotel.API
                 };
             });
 
+            builder.Services.AddAutoMapper(typeof(Program));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
