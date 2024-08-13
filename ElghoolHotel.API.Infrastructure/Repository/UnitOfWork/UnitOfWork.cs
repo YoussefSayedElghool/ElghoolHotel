@@ -11,7 +11,7 @@ namespace ElghoolHotel.API.Infrastructure.Repository.UnitOfWork
     {
         private readonly AppDbContext _context;
 
-        public IRoomRepository Hotels { get; }
+        public IHotelRepository Hotels { get; }
 
         public IRoomRepository Rooms { get; }
 
@@ -27,7 +27,7 @@ namespace ElghoolHotel.API.Infrastructure.Repository.UnitOfWork
 
         public IRefreshTokenRepository RefreshTokens { get; }
 
-        public UnitOfWork(IRoomRepository hotels, IRoomRepository rooms, IRoomTypeRepository roomTypes, ISliderRepository sliders, IReviewRepository reviews, ICityRepository cities, IBagRepository bags, IRefreshTokenRepository refreshTokens)
+        public UnitOfWork(IHotelRepository hotels, IRoomRepository rooms, IRoomTypeRepository roomTypes, ISliderRepository sliders, IReviewRepository reviews, ICityRepository cities, IBagRepository bags, IRefreshTokenRepository refreshTokens)
         {
             Hotels = hotels;
             Rooms = rooms;

@@ -10,7 +10,7 @@ namespace ElghoolHotel.API.Core.Contract.Repository.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        IRoomRepository Hotels { get; }
+        IHotelRepository Hotels { get; }
         IRoomRepository Rooms { get; }
         IRoomTypeRepository RoomTypes { get; }
         ISliderRepository Sliders { get; }
