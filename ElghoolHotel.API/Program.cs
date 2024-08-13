@@ -1,3 +1,19 @@
+using ElghoolHotel.API.Core.Contract.Repository;
+using ElghoolHotel.API.Core.Contract.Repository.UnitOfWork;
+using ElghoolHotel.API.Core.Contract.Service;
+using ElghoolHotel.API.Core.Helpers;
+using ElghoolHotel.API.Core.Repository.abstraction_layer;
+using ElghoolHotel.API.Infrastructure.Repository;
+using ElghoolHotel.API.Infrastructure.Repository.UnitOfWork;
+using ElghoolHotel.API.Models;
+using ElghoolHotel.API.Repository;
+using ElghoolHotel.API.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 namespace ElghoolHotel.API
 {
     public class Program
@@ -5,6 +21,52 @@ namespace ElghoolHotel.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
+            // Add services to the container.
+            builder.Services.AddDbContext<AppDbContext>(optionBuilder =>
+            {
+
+                optionBuilder.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+            });
+
+            builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            // Register 
+            builder.Services.AddScoped<IAccountingService, AccountingService>();
+            builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            builder.Services.AddScoped<ISliderRepository, SliderRepository>();
+            builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+            builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
+            builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+            builder.Services.AddScoped<ICityRepository, CityRepository>();
+            builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IBagRepository, BagRepository>();
+
+
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(o =>
+            {
+                o.RequireHttpsMetadata = false;
+                o.SaveToken = false;
+                o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = builder.Configuration["JWT:Issuer"],
+                    ValidAudience = builder.Configuration["JWT:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
