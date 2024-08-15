@@ -18,7 +18,7 @@ namespace ElghoolHotel.API.Core.Models
         public int RoomTypeId { get; set; }
         public virtual RoomType RoomType { get; set; }
 
-        public virtual List<Bag> Bags { get; set; }
+        public virtual List<Booking> Bags { get; set; }
 
     }
 }

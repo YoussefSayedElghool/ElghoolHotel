@@ -1,0 +1,73 @@
+﻿
+
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Formes.css" asp-append-version="true" />
+
+<div class="form-container">
+    <div class="form-logo-container">
+        <img src="~/Images/Logo.png" class="form-logo-img" alt="Elghool Food Logo" />
+        <h1 class="form-logo-header">Elghool Food</h1>
+    </div>
+
+    <div class="form-input-container">
+        <label for="email">Email</label>
+        <input id="email" class="input" placeholder="Enter your email" />
+        <span id="email-error"></span>
+
+        <label for="password">Password</label>
+        <input id="password" class="input" type="password" placeholder="Enter your password" />
+        <span id="password-error"></span>
+    </div>
+
+    <button type="button" class="form-button" id="login-button">Login</button>
+
+    <div class="form-links">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Forgot password</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+    </div>
+</div>
+
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+
+
+<script>
+
+        $(document).ready(function () {
+            $('#login-button').click(function () {
+                console.log("test")
+                var loginData = {
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                };
+
+                $.ajax({
+                    url: 'http://localhost:5181/login', 
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(loginData),
+                    success: function (response) {
+                        if (response.isCompleteSuccessfully) {
+
+                        window.location.href = '/Home/Index';
+                    } else {
+                            alert(response.errorMessages);
+                        }
+                    },
+                    error: function (xhr) {
+                        var errors = JSON.parse(xhr.responseText);
+                        if (errors.isCompleteSuccessfully === false) {
+                            $('#email-error').text(errors.errorMessages); 
+                            $('#password-error').text(errors.errorMessages);
+                        } else {
+                            alert('An unexpected error occurred.');
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+

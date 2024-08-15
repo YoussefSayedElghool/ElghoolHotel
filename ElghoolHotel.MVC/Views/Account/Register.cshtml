@@ -1,0 +1,49 @@
+﻿<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Formes.css" asp-append-version="true" />
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<partial name="_ValidationScriptsPartial" />
+
+<div class="form-container">
+
+    <form asp-controller="Account" asp-action="Register" method="post" class="form" role="form">
+
+
+        <div class="form-logo-container">
+
+            <img src="~/Images/Logo.png" class="form-logo-img" />
+            <h1 class="form-logo-header">Elghool Food</h1>
+
+        </div>
+
+        <div class="form-input-container">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <label></label>
+            <input class="input" placeholder="Enter yor name" />
+            <span></span>
+
+            <label></label>
+            <input class="input" placeholder="Enter yor email" />
+            <span></span>
+
+            <label></label>
+            <input placeholder="password" />
+            <span></span>
+
+            <label></label>
+            <input class="input" placeholder="confirm password" />
+            <span></span>           
+
+        </div>
+
+        <button type="submit" class="form-button">Register</button>
+
+        <div class="form-links">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+        </div>
+
+
+    </form>
+</div>

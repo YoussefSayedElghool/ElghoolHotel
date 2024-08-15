@@ -3,11 +3,6 @@ using ElghoolHotel.API.Core.DTO;
 using ElghoolHotel.API.Core.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-
-
-
-
-
 namespace ElghoolHotel.API.Controllers
 {
     [ApiController]

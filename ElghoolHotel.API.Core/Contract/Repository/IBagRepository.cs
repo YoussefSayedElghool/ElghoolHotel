@@ -3,7 +3,7 @@ using ElghoolHotel.API.Core.Models;
 
 namespace ElghoolHotel.API.Core.Contract.Repository
 {
-    public interface IBagRepository : IBaseRepository<Bag>
+    public interface IBagRepository : IBaseRepository<Booking>
     {
     }
 }

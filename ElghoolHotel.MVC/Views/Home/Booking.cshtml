@@ -1,0 +1,179 @@
+﻿<style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        .form-group label {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .form-control {
+            background-color: #e0e0e0;
+            border: none;
+            height: 50px;
+            border-radius: 8px;
+        }
+
+            .form-control:focus {
+                box-shadow: none;
+                border-color: #ccc;
+            }
+
+        .btn-primary {
+            background-color: #333;
+            border-color: #333;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+            .btn-primary:hover {
+                background-color: #555;
+                border-color: #555;
+            }
+
+        .btn-secondary {
+            background-color: #999;
+            border-color: #999;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+        }
+
+            .btn-secondary:hover {
+                background-color: #777;
+                border-color: #777;
+            }
+
+        .form-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .room-container {
+            margin-bottom: 20px;
+        }
+    </style>
+
+<div class="form-container">
+    <h2 class="form-title">Booking Form</h2>
+    <form method="post" action="/YourController/YourAction">
+        <div class="form-group">
+            <label for="checkInDate">Check-In Date:</label>
+            <input type="date" class="form-control" id="checkInDate" name="checkInDate" required />
+        </div>
+
+        <div class="form-group">
+            <label for="checkOutDate">Check-Out Date:</label>
+            <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
+        </div>
+
+        <div id="roomsContainer">
+            <!-- Room Request fields will be added here dynamically -->
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-block" onclick="addRoom()">Add Room</button>
+        <button type="submit" class="btn btn-primary btn-block">Submit Booking</button>
+    </form>
+</div>
+
+<script>
+    let roomIndex = 0;
+
+    function addRoom() {
+        roomIndex++;
+
+        const roomHtml = `
+                            <div class="room-container">
+                                <h4>Room ${roomIndex}</h4>
+
+                                <div class="form-group">
+                                    <label for="Rooms_${roomIndex}_HotelId">Hotel:</label>
+                                    <select class="form-control" id="Rooms_${roomIndex}_HotelId" name="Rooms[${roomIndex}].HotelId" required>
+                                        <option value="">Select Hotel</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Rooms_${roomIndex}_RoomTypeId">Room Type:</label>
+                                    <select class="form-control" id="Rooms_${roomIndex}_RoomTypeId" name="Rooms[${roomIndex}].RoomTypeId" required>
+                                        <option value="">Select Room Type</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Rooms_${roomIndex}_AdultNumber">Number of Adults:</label>
+                                    <input type="number" class="form-control" id="Rooms_${roomIndex}_AdultNumber" name="Rooms[${roomIndex}].AdultNumber" required />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Rooms_${roomIndex}_ChildrenNumber">Number of Children:</label>
+                                    <input type="number" class="form-control" id="Rooms_${roomIndex}_ChildrenNumber" name="Rooms[${roomIndex}].ChildrenNumber" required />
+                                </div>
+                            </div>
+                        `;
+
+        const $roomContainer = $(roomHtml);
+        $('#roomsContainer').append($roomContainer);
+
+        // Populate the dropdowns with data from the APIs
+        populateHotelsDropdown(roomIndex);
+        populateRoomTypesDropdown(roomIndex);
+    }
+    function populateHotelsDropdown(index) {
+        $.ajax({
+            url: "http://localhost:5181/api/Hotels",
+            method: "GET",
+            success: function (response) {
+                if (response.isCompleteSuccessfully) {
+                    const $dropdown = $(`#Rooms_${index}_HotelId`);
+                    response.data.forEach(function (hotel) {
+                        $dropdown.append(new Option(hotel.name, hotel.hotelId)); // Assuming response has hotelId and name
+                    });
+                } else {
+                    alert('Failed to load hotel data.');
+                }
+            },
+            error: function () {
+                alert('Failed to load hotel data.');
+            }
+        });
+    }
+
+    function populateRoomTypesDropdown(index) {
+        $.ajax({
+            url: "http://localhost:5181/api/RoomTypes",
+            method: "GET",
+            success: function (response) {
+                if (response.isCompleteSuccessfully) {
+                    const $dropdown = $(`#Rooms_${index}_RoomTypeId`);
+                    response.data.forEach(function (roomType) {
+                        $dropdown.append(new Option(roomType.type, roomType.roomTypeId));
+                    });
+                } else {
+                    alert('Failed to load room type data.');
+                }
+            },
+            error: function () {
+                alert('Failed to load room type data.');
+            }
+        });
+    }
+
+    // Initial call to add the first room
+    addRoom();
+</script>
+

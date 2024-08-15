@@ -3,10 +3,12 @@ using ElghoolHotel.API.Core.Contract.Repository.UnitOfWork;
 using ElghoolHotel.API.Core.Contract.Service;
 using ElghoolHotel.API.Core.Helpers;
 using ElghoolHotel.API.Core.Repository.abstraction_layer;
+using ElghoolHotel.API.Core.Service;
 using ElghoolHotel.API.Infrastructure.Repository;
 using ElghoolHotel.API.Infrastructure.Repository.UnitOfWork;
 using ElghoolHotel.API.Models;
 using ElghoolHotel.API.Repository;
+using ElghoolHotel.API.Seeding;
 using ElghoolHotel.API.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +24,17 @@ namespace ElghoolHotel.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+
+
             builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
             // Add services to the container.
             builder.Services.AddDbContext<AppDbContext>(optionBuilder =>
@@ -32,6 +45,7 @@ namespace ElghoolHotel.API
 
             builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
             // Register 
+            builder.Services.AddScoped<IAccountingService, AccountingService>();
             builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             builder.Services.AddScoped<ISliderRepository, SliderRepository>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
@@ -41,6 +55,10 @@ namespace ElghoolHotel.API
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IBagRepository, BagRepository>();
+
+
+            // Service
+            builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
 
 
 
@@ -84,7 +102,9 @@ namespace ElghoolHotel.API
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+           
             app.UseRouting();
+            app.UseCors("AllowAllOrigins");
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -93,6 +113,7 @@ namespace ElghoolHotel.API
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            app.MigrateDatabaseAndSeed();
             app.Run();
         }
     }

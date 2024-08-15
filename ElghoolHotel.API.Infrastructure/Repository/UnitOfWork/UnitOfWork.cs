@@ -9,7 +9,7 @@ namespace ElghoolHotel.API.Infrastructure.Repository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly AppDbContext _context;
+        private readonly AppDbContext context;
 
         public IHotelRepository Hotels { get; }
 
@@ -27,8 +27,9 @@ namespace ElghoolHotel.API.Infrastructure.Repository.UnitOfWork
 
         public IRefreshTokenRepository RefreshTokens { get; }
 
-        public UnitOfWork(IHotelRepository hotels, IRoomRepository rooms, IRoomTypeRepository roomTypes, ISliderRepository sliders, IReviewRepository reviews, ICityRepository cities, IBagRepository bags, IRefreshTokenRepository refreshTokens)
+        public UnitOfWork(AppDbContext context, IHotelRepository hotels, IRoomRepository rooms, IRoomTypeRepository roomTypes, ISliderRepository sliders, IReviewRepository reviews, ICityRepository cities, IBagRepository bags, IRefreshTokenRepository refreshTokens)
         {
+            this.context = context;
             Hotels = hotels;
             Rooms = rooms;
             RoomTypes = roomTypes;
@@ -41,17 +42,17 @@ namespace ElghoolHotel.API.Infrastructure.Repository.UnitOfWork
 
         public void Dispose()
         {
-            _context.Dispose();
+            context.Dispose();
         }
 
         public Result<bool> Save()
         {
             bool returnValue = true;
-            using (var dbContextTransaction = _context.Database.BeginTransaction())
+            using (var dbContextTransaction = context.Database.BeginTransaction())
             {
                 try
                 {
-                    _context.SaveChanges();
+                    context.SaveChanges();
                     dbContextTransaction.Commit();
                     return new Result<bool>()
                     {

@@ -1,0 +1,41 @@
+﻿
+
+
+<link rel="stylesheet" href="~/css/_HeaderPartial.css" asp-append-version="true" />
+
+<header class="header">
+   <nav class="nav">
+
+
+       <div class="div-container">
+            <img src="~/Images/Logo.png" class="logo" />
+
+            <h1 class="Brand-name">Elghool Hotal</h1>
+
+       </div>
+
+        <ul class="my-navbar-nav d-none d-sm-flex">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Booking">Booking</a>
+                </li>
+            </ul>
+
+
+        <div class="imges-container">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Items">
+            <img src="~/Images/shopping_cart.png" class="shopping-cart" />
+            </a>
+             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/Images/search_icon.png" class="search-icon" />
+            </a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profile">
+            <img src="~/Images/user image.png" class="user-image" />
+            </a>
+        </div>
+
+   </nav>
+</header>

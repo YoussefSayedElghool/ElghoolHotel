@@ -1,0 +1,124 @@
+﻿<style>
+
+    .home-testimonial {
+        background-color: #151515;
+        height: auto;
+        padding: 0px 30px 30px 30px;
+        border-radius: 5px;
+    }
+
+
+    .home-testimonial-bottom {
+        transition: background 0.3s, border 0.3s, border-radius 0.3s, box-shadow 0.3s;
+    }
+
+    .home-testimonial h3 {
+        color: var(--orange);
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase
+    }
+
+    .home-testimonial h2 {
+        color: white;
+        font-size: 28px;
+        font-weight: 700
+    }
+
+    .testimonial-inner .tour-desc {
+        border-radius: 5px;
+        padding: 40px
+    }
+
+    .color-grey-3 {
+        font-family: Bahnschrift,'Times New Roman', Times, serif;
+        font-size: 14px;
+        color: #6c83a2
+    }
+
+    .testimonial-inner img.tm-people {
+        width: 60px;
+        height: 60px;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        -o-object-fit: cover;
+        object-fit: cover;
+        max-width: none
+    }
+
+    .link-name {
+        font-family: Bahnschrift,'Times New Roman', Times, serif;
+        font-size: 14px;
+        color: #6c83a2
+    }
+
+    .link-position {
+        font-family: Bahnschrift,'Times New Roman', Times, serif;
+        font-size: 12px;
+        color: #6c83a2
+    }
+
+    .review-card{
+        min-height: 258px;
+        height: auto;
+        margin: 10px;
+    }
+
+    .testimonial-pos{
+        padding: 29px;
+    }
+</style>
+
+<section class="home-testimonial">
+        <div class="row d-flex justify-content-center testimonial-pos">
+            <div class="col-md-12 d-flex justify-content-center">
+                <h2>Explore the clients experience</h2>
+            </div>
+        </div>
+    <section class="home-testimonial-bottom container testimonial-inner w-100">
+            <div class="row d-flex justify-content-center w-100" id="testimonial-content">
+                    <!-- Dynamic content will be injected here -->
+                </div>
+        </section>
+
+    
+    
+    </section>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:5181/api/Reviews',
+            type: 'GET',
+            success: function (response) {
+                var reviews = response.data;
+                var testimonialContent = '';
+                reviews.forEach(function (review) {
+                    testimonialContent += `
+                        <div class="col-md-4 style-3">
+                            <div class="tour-item ">
+                                    <div class="tour-desc bg-white review-card">
+                                    <div class="tour-text color-grey-3 text-center">
+                                        &ldquo;${review.userReview}&rdquo;
+                                    </div>
+                                    <div class="d-flex justify-content-center pt-2 pb-2">
+                                        <img class="tm-people" src="${review.userImageUrl}" alt="">
+                                    </div>
+                                    <div class="link-name d-flex justify-content-center">
+                                         Youssef Elghool
+                                    </div>
+                                    <div class="link-position d-flex justify-content-center">
+                                        Engineer
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+                $('#testimonial-content').html(testimonialContent);
+            },
+            error: function (err) {
+                console.log('Error fetching reviews:', err);
+            }
+        });
+    });
+</script>

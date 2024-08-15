@@ -31,13 +31,13 @@ namespace ElghoolHotel.API.Models
 
         public DbSet<City> Cities { get; set; }
 
-        public DbSet<Bag> Bags { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Bag>()
+            builder.Entity<Booking>()
                     .HasOne<User>(t => (User)t.User)
                     .WithMany(u => u.Bags)
                     .HasForeignKey(t => t.UserId);

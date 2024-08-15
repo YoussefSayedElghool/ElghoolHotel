@@ -33,16 +33,18 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BagId"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("checkInDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("checkOutDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("BagId");
 

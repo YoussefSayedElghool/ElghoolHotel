@@ -3,16 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ElghoolHotel.API.Core.Models
 {
-    public class Bag
+    public class Booking
     {
-        public int BagId { get; set; }
-        public string Name { get; set; }
-
-        [ForeignKey("Room")]
-        public int RoomId { get; set; }
-        public virtual Room Room { get; set; }
-
-
+        public int BookingId { get; set; }
+        public DateTime checkInDate{ get; set; }
+        public DateTime checkOutDate{ get; set; }
+        public virtual List<RoomRequest> Rooms { get; set; }
         [ForeignKey("User")]
         public string UserId { get; set; }
         public virtual IUserBase User { get; set; }

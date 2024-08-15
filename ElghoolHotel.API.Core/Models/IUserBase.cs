@@ -6,7 +6,7 @@
         public string DisplayName { get; set; }
 
         public List<RefreshToken> RefreshTokens { get; set; }
-        public List<Bag> Bags { get; set; }
+        public List<Booking> Bags { get; set; }
 
     }
 }

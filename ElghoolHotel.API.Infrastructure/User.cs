@@ -10,7 +10,7 @@ namespace ElghoolHotel.API.Models
         public required string DisplayName { get; set; }
         public string Image { get; set; }
 
-        public virtual List<Bag> Bags { get; set; }
+        public virtual List<Booking> Bags { get; set; }
         public virtual List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
     }

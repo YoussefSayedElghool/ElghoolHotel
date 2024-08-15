@@ -1,0 +1,60 @@
+﻿<link href="~/css/glide.core.min.css" rel="stylesheet" />
+<link href="~/css/glide.theme.min.css" rel="stylesheet" />
+<script src="~/js/glide.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    .glide__slide img {
+        width: 100%;
+        height: 500px;
+        transition: all 2s, height 2s, transform 2s;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
+<div class="glide">
+    <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides" id="slider">
+            <!-- Slides will be injected here -->
+        </ul>
+    </div>
+
+    <div class="glide__arrows" data-glide-el="controls">
+        <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+        <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+    </div>
+</div>
+
+<script>
+    function fetchSliders() {
+        $.ajax({
+            url: 'http://localhost:5181/api/Sliders',
+            method: 'GET',
+            success: function (data) {
+                if (data.isCompleteSuccessfully) {
+                    const slidesContainer = $('#slider');
+                    data.data.forEach(slide => {
+                        const slideElement = $('<li>', { class: 'glide__slide' });
+                        slideElement.html(`<img src="${slide.imageUrl}" alt="${slide.altText}">`);
+                        slidesContainer.append(slideElement);
+                    });
+
+                    const glide = new Glide('.glide', {
+                        type: 'carousel',
+                        autoplay: 2000, // Autoplay interval in milliseconds
+                        animationDuration: 800, // Duration of the slide animation
+                        hoverpause: true, // Pause autoplay on hover
+                    });
+
+                    glide.mount();
+                } else {
+                    console.error('Failed to load sliders:', data.errorMessages);
+                }
+            },
+            error: function (error) {
+                console.error('Error fetching sliders:', error);
+            }
+        });
+    }
+
+    fetchSliders();
+</script>
