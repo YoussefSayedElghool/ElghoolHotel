@@ -1,147 +1,121 @@
-﻿<style>
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .form-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-        }
-
-        .form-group label {
-            font-size: 1.2rem;
-            color: #333;
-        }
-
-        .form-control {
-            background-color: #e0e0e0;
-            border: none;
-            height: 50px;
-            border-radius: 8px;
-        }
-
-            .form-control:focus {
-                box-shadow: none;
-                border-color: #ccc;
-            }
-
-        .btn-primary {
-            background-color: #333;
-            border-color: #333;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 1.2rem;
-        }
-
-            .btn-primary:hover {
-                background-color: #555;
-                border-color: #555;
-            }
-
-        .btn-secondary {
-            background-color: #999;
-            border-color: #999;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 1.2rem;
-        }
-
-            .btn-secondary:hover {
-                background-color: #777;
-                border-color: #777;
-            }
-
-        .form-title {
-            font-size: 2rem;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .room-container {
-            margin-bottom: 20px;
-        }
-    </style>
+﻿<link rel="stylesheet" href="~/css/Formes.css" asp-append-version="true" />
 
 <div class="form-container">
-    <h2 class="form-title">Booking Form</h2>
-    <form method="post" action="/YourController/YourAction">
-        <div class="form-group">
-            <label for="checkInDate">Check-In Date:</label>
-            <input type="date" class="form-control" id="checkInDate" name="checkInDate" required />
+    <div class="form">
+        <div class="form-logo-container">
+            <h2 class="form-logo-header">Booking Form</h2>
         </div>
+        <form id="bookigForm" method="post" action="http://localhost:5181/api/Bookings" enctype="multipart/form-data">
+            <div class="form-input-container">
+                <label for="checkInDate">Check-In Date:</label>
+                <input type="date" class="input" id="checkInDate" name="checkInDate" required />
+            </div>
 
-        <div class="form-group">
-            <label for="checkOutDate">Check-Out Date:</label>
-            <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required />
-        </div>
+            <div class="form-input-container">
+                <label for="checkOutDate">Check-Out Date:</label>
+                <input type="date" class="input" id="checkOutDate" name="checkOutDate" required />
+            </div>
 
-        <div id="roomsContainer">
-            <!-- Room Request fields will be added here dynamically -->
-        </div>
+            <div id="RoomRequestsContainer" class="form-input-container">
+                <!--RoomRequests -->
+            </div>
 
-        <button type="button" class="btn btn-secondary btn-block" onclick="addRoom()">Add Room</button>
-        <button type="submit" class="btn btn-primary btn-block">Submit Booking</button>
-    </form>
+            <button type="button" class="form-button" onclick="addRoom()">Add Room</button>
+            <button type="submit" class="form-button">Submit Booking</button>
+        </form>
+    </div>
 </div>
 
-<script>
+<script type="module">
+
+    import { TokenHandel } from '/js/tokenhandel.js';
+
+    document.getElementById("bookigForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+          fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${TokenHandel.getToken()}`,
+                'Accept': 'application/json' 
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.statusText}`);
+                }
+                return response.text(); 
+            })
+            .then(text => {
+                const data = text ? JSON.parse(text) : {};
+                alert('done');
+                console.log(data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    });
+</script>
+
+   <script>
+
     let roomIndex = 0;
 
     function addRoom() {
-        roomIndex++;
-
         const roomHtml = `
-                            <div class="room-container">
-                                <h4>Room ${roomIndex}</h4>
+            <div class="room-container">
+                <h4>Room ${roomIndex + 1}</h4>
 
-                                <div class="form-group">
-                                    <label for="Rooms_${roomIndex}_HotelId">Hotel:</label>
-                                    <select class="form-control" id="Rooms_${roomIndex}_HotelId" name="Rooms[${roomIndex}].HotelId" required>
-                                        <option value="">Select Hotel</option>
-                                    </select>
-                                </div>
+                <div class="form-input-container">
+                    <label for="RoomRequests_${roomIndex}_HotelId">Hotel:</label>
+                    <select class="input" id="RoomRequests_${roomIndex}_HotelId" name="RoomRequests[${roomIndex}].HotelId" required>
+                        <option value="">Select Hotel</option>
+                    </select>
+                </div>
 
-                                <div class="form-group">
-                                    <label for="Rooms_${roomIndex}_RoomTypeId">Room Type:</label>
-                                    <select class="form-control" id="Rooms_${roomIndex}_RoomTypeId" name="Rooms[${roomIndex}].RoomTypeId" required>
-                                        <option value="">Select Room Type</option>
-                                    </select>
-                                </div>
+                <div class="form-input-container">
+                    <label for="RoomRequests_${roomIndex}_RoomTypeId">Room Type:</label>
+                    <select class="input" id="RoomRequests_${roomIndex}_RoomTypeId" name="RoomRequests[${roomIndex}].RoomTypeId" required>
+                        <option value="">Select Room Type</option>
+                    </select>
+                </div>
 
-                                <div class="form-group">
-                                    <label for="Rooms_${roomIndex}_AdultNumber">Number of Adults:</label>
-                                    <input type="number" class="form-control" id="Rooms_${roomIndex}_AdultNumber" name="Rooms[${roomIndex}].AdultNumber" required />
-                                </div>
+                <div class="form-input-container">
+                    <label for="RoomRequests_${roomIndex}_AdultNumber">Number of Adults:</label>
+                    <input type="number" class="input" id="RoomRequests_${roomIndex}_AdultNumber" name="RoomRequests[${roomIndex}].AdultNumber" required />
+                </div>
 
-                                <div class="form-group">
-                                    <label for="Rooms_${roomIndex}_ChildrenNumber">Number of Children:</label>
-                                    <input type="number" class="form-control" id="Rooms_${roomIndex}_ChildrenNumber" name="Rooms[${roomIndex}].ChildrenNumber" required />
-                                </div>
-                            </div>
-                        `;
+                <div class="form-input-container">
+                    <label for="RoomRequests_${roomIndex}_ChildrenNumber">Number of Children:</label>
+                    <input type="number" class="input" id="RoomRequests_${roomIndex}_ChildrenNumber" name="RoomRequests[${roomIndex}].ChildrenNumber" required />
+                </div>
+            </div>
+        `;
 
         const $roomContainer = $(roomHtml);
-        $('#roomsContainer').append($roomContainer);
+        $('#RoomRequestsContainer').append($roomContainer);
 
-        // Populate the dropdowns with data from the APIs
         populateHotelsDropdown(roomIndex);
         populateRoomTypesDropdown(roomIndex);
+
+        roomIndex++;
     }
+
+
+
     function populateHotelsDropdown(index) {
         $.ajax({
             url: "http://localhost:5181/api/Hotels",
             method: "GET",
             success: function (response) {
                 if (response.isCompleteSuccessfully) {
-                    const $dropdown = $(`#Rooms_${index}_HotelId`);
+                    const $dropdown = $(`#RoomRequests_${index}_HotelId`);
                     response.data.forEach(function (hotel) {
-                        $dropdown.append(new Option(hotel.name, hotel.hotelId)); // Assuming response has hotelId and name
+                        $dropdown.append(new Option(hotel.name, hotel.hotelId));
                     });
                 } else {
                     alert('Failed to load hotel data.');
@@ -159,7 +133,7 @@
             method: "GET",
             success: function (response) {
                 if (response.isCompleteSuccessfully) {
-                    const $dropdown = $(`#Rooms_${index}_RoomTypeId`);
+                    const $dropdown = $(`#RoomRequests_${index}_RoomTypeId`);
                     response.data.forEach(function (roomType) {
                         $dropdown.append(new Option(roomType.type, roomType.roomTypeId));
                     });
@@ -173,7 +147,28 @@
         });
     }
 
-    // Initial call to add the first room
     addRoom();
 </script>
 
+<script type="module">
+
+    import { TokenHandel } from '/js/tokenhandel.js';
+    $.ajax({
+        url: 'http://localhost:5181/api/Discounts', 
+        type: 'GET',
+        dataType: 'json',
+        headers: {
+            'Authorization': 'Bearer ' + TokenHandel.getToken()
+        },
+        success: function (response) {
+            if (response.isCompleteSuccessfully && response.data) {
+                alert("Congratulations! You have a discount.");
+            }
+        },
+        error: function (status, error) {
+            console.error(error);
+        }
+    });
+
+
+</script>

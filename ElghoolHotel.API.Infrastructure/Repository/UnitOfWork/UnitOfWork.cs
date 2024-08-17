@@ -23,11 +23,11 @@ namespace ElghoolHotel.API.Infrastructure.Repository.UnitOfWork
 
         public ICityRepository Cities { get; }
 
-        public IBagRepository Bags { get; }
+        public IBookingRepository Bookings { get; }
 
         public IRefreshTokenRepository RefreshTokens { get; }
 
-        public UnitOfWork(AppDbContext context, IHotelRepository hotels, IRoomRepository rooms, IRoomTypeRepository roomTypes, ISliderRepository sliders, IReviewRepository reviews, ICityRepository cities, IBagRepository bags, IRefreshTokenRepository refreshTokens)
+        public UnitOfWork(AppDbContext context, IHotelRepository hotels, IRoomRepository rooms, IRoomTypeRepository roomTypes, ISliderRepository sliders, IReviewRepository reviews, ICityRepository cities, IBookingRepository bookings, IRefreshTokenRepository refreshTokens)
         {
             this.context = context;
             Hotels = hotels;
@@ -36,7 +36,7 @@ namespace ElghoolHotel.API.Infrastructure.Repository.UnitOfWork
             Sliders = sliders;
             Reviews = reviews;
             Cities = cities;
-            Bags = bags;
+            Bookings = bookings;
             RefreshTokens = refreshTokens;
         }
 

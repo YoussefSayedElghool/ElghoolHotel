@@ -21,5 +21,9 @@ namespace ElghoolHotel.API.Core.DTO
         [Required]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
+
+        [MaxLength(14)]
+        [MinLength(14)]
+        public string NationalId { get; set; }
     }  
 }

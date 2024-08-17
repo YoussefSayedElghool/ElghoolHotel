@@ -2,12 +2,9 @@
 <link rel="stylesheet" href="~/css/Formes.css" asp-append-version="true" />
 
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<partial name="_ValidationScriptsPartial" />
-
 <div class="form-container">
 
-    <form asp-controller="Account" asp-action="Register" method="post" class="form" role="form">
+    <form id="registerForm" method="post" class="form" action="http://localhost:5181/Register">
 
 
         <div class="form-logo-container">
@@ -20,20 +17,25 @@
         <div class="form-input-container">
             <div asp-validation-summary="All" class="text-danger"></div>
 
-            <label></label>
-            <input class="input" placeholder="Enter yor name" />
+
+            <label for="name">Name</label>
+            <input id="name" name="DisplayName" class="input" placeholder="Enter yor name" />
             <span></span>
 
-            <label></label>
-            <input class="input" placeholder="Enter yor email" />
+            <label for="email">Email</label>
+            <input id="email" name="Email" class="input" placeholder="Enter your email" />
+            <span id="email-error"></span> 
+            
+            <label for="nationalId">National Id</label>
+            <input id="nationalId" name="NationalId" class="input" placeholder="Enter your national id" />
+            <span id="email-error"></span>
+
+            <label for="password">Password</label>
+            <input id="password" name="Password" class="input" type="password" placeholder="password" />
             <span></span>
 
-            <label></label>
-            <input placeholder="password" />
-            <span></span>
-
-            <label></label>
-            <input class="input" placeholder="confirm password" />
+            <label for="confirmPassword">ConfirmPassword</label>
+            <input id="confirmPassword" name="ConfirmPassword" type="password" class="input" placeholder="confirm password" />
             <span></span>           
 
         </div>
@@ -47,3 +49,57 @@
 
     </form>
 </div>
+
+
+
+
+
+<script type="module">
+
+    import { TokenHandel } from '/js/tokenhandel.js';
+
+    document.getElementById("registerForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+
+
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        fetch(form.action, {
+            method: form.method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.json();
+                    throw new Error(`Server error: ${response.statusText}`);
+                }
+            })
+            .then(data => {
+                if (data.isCompleteSuccessfully) {
+                    TokenHandel.setToken(data.token, data.refreshToken, data.refreshTokenExpiration)
+                    window.location.href = '/Home/Index';
+                } else {
+                    console.error("Error in response", data);
+                }
+            })
+            .catch(error => {
+                console.error("Error submitting", error);
+            });
+    });
+
+
+
+
+</script>
+

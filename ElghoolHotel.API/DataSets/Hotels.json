@@ -1,11 +1,14 @@
 [
   {
-    "Name": "Cairo 5 strars",
+    "CityId": "1",
+    "Name": "Cairo 5 strars"
   },
   {
-    "Name": "test 7 strars",
+    "CityId": "2",
+    "Name": "test 7 strars"
   },
   {
-    "Name": "test 3 strars",
+    "CityId": "3",
+    "Name": "test 3 strars"
   }
 ]

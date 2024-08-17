@@ -9,6 +9,9 @@ namespace ElghoolHotel.API.Models
     {
         public required string DisplayName { get; set; }
         public string Image { get; set; }
+        public string NationalId { get; set; }
+        public bool HasDiscount { get; set; }
+        public double Discount { get; set; }
 
         public virtual List<Booking> Bags { get; set; }
         public virtual List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();

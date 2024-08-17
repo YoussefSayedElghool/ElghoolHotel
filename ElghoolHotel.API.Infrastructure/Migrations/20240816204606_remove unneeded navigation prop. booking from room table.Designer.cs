@@ -4,6 +4,7 @@ using ElghoolHotel.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElghoolHotel.API.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240816204606_remove unneeded navigation prop. booking from room table")]
+    partial class removeunneedednavigationpropbookingfromroomtable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,7 +40,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasIndex("RoomRequestsRoomRequestId");
 
-                    b.ToTable("BookingRoomRequest", (string)null);
+                    b.ToTable("BookingRoomRequest");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.Booking", b =>
@@ -62,7 +65,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.City", b =>
@@ -79,7 +82,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasKey("CityId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.Hotel", b =>
@@ -101,7 +104,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Hotels", (string)null);
+                    b.ToTable("Hotels");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.RefreshToken", b =>
@@ -133,7 +136,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.Review", b =>
@@ -154,7 +157,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.Room", b =>
@@ -190,7 +193,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasIndex("RoomTypeId");
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.RoomRequest", b =>
@@ -219,7 +222,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasIndex("RoomTypeId");
 
-                    b.ToTable("RoomRequests", (string)null);
+                    b.ToTable("RoomRequests");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.RoomType", b =>
@@ -236,7 +239,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasKey("RoomTypeId");
 
-                    b.ToTable("RoomTypes", (string)null);
+                    b.ToTable("RoomTypes");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Core.Models.Slider", b =>
@@ -253,7 +256,7 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.HasKey("SliderId");
 
-                    b.ToTable("Sliders", (string)null);
+                    b.ToTable("Sliders");
                 });
 
             modelBuilder.Entity("ElghoolHotel.API.Models.User", b =>
@@ -268,9 +271,6 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
-
                     b.Property<string>("DisplayName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -282,9 +282,6 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("HasDiscount")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -294,10 +291,6 @@ namespace ElghoolHotel.API.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NationalId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)

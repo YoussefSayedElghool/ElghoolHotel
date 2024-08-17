@@ -1,16 +1,5 @@
 [
-  {
-    "CityId": "1",
-    "Name": "Cairo"
-  },
-  {
-    "CityId": "2",
-    "Name": "Tanta"
-
-  },
-  {
-    "CityId": "3",
-    "Name": "Giza"
-
-  }
+  { "Name": "Cairo" },
+  { "Name": "Tanta" },
+  { "Name": "Giza" }
 ]

@@ -1,47 +1,90 @@
-﻿using ElghoolHotel.API.Core.Contract.Repository.UnitOfWork;
-using ElghoolHotel.API.Core.Contract.Service;
+﻿using AutoMapper;
 using ElghoolHotel.API.Core.DTO;
 using ElghoolHotel.API.Core.Helpers;
 using ElghoolHotel.API.Core.Models;
-using ElghoolHotel.API.Infrastructure.Repository.UnitOfWork;
+using ElghoolHotel.API.Core.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using System.Linq;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
+
 
 namespace ElghoolHotel.API.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BookingsController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IBookingService bookingService;
+        private readonly IMapper mapper;
 
-        public BookingsController(IUnitOfWork unitOfWork)
+        public BookingsController(IBookingService bookingService, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.bookingService = bookingService;
+            this.mapper = mapper;
         }
+
 
         [HttpPost]
-        public async Task<ActionResult<Result<bool>>> Create(BookingDto bookingDto)
+        public async Task<ActionResult<Result<BookingRequestDto>>> Booking([FromForm] BookingRequestDto bookingDto)
         {
-            //unitOfWork.Bags.EditAsync(bag);
-            //bookingDto.
-            //if (ModelState.IsValid)
-            //{
-            //    unitOfWork.Bags.EditAsync(bag);
-            //    unitOfWork.Save();
-            //}
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new Result<BookingRequestDto>
+                {
+                    IsCompleteSuccessfully = false,
+                    ErrorMessages = ErrorMessageUserConst.Custom(
+                        400,
+                        string.Join("\n", ModelState.Values.SelectMany(v => v.Errors))
+                    )
+                });
+            }
 
-            return Ok();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            if (string.IsNullOrEmpty(userId))
+                return BadRequest(new Result<BookingRequestDto>()
+                {
+                    IsCompleteSuccessfully = false,
+                    ErrorMessages = ErrorMessageUserConst.Custom(404, string.Join("\n", ModelState.Values.SelectMany(v => v.Errors))),
+                });
+
+            var result = await bookingService.CreateBookingAsync(bookingDto , userId);
+
+            var resultDto = mapper.Map<Result<BookingRequestDto>>(result);
+
+            if (!result.IsCompleteSuccessfully)
+                return StatusCode(result.ErrorMessages.StatusCode, result);
+
+            return Ok(resultDto); 
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult<Result<List<BookingResponseDto>>>> Booking()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+                return BadRequest(new Result<List<BookingResponseDto>>()
+                {
+                    IsCompleteSuccessfully = false,
+                    ErrorMessages = ErrorMessageUserConst.Custom(404, string.Join("\n", ModelState.Values.SelectMany(v => v.Errors))),
+                });
+
+
+            var result = await bookingService.GetAllUserBookingAsync(userId);
+
+            var resultDto = mapper.Map<Result<List<BookingResponseDto>>>(result);
+
+            if (!result.IsCompleteSuccessfully)
+                return StatusCode(result.ErrorMessages.StatusCode, result);
+
+            return Ok(resultDto); 
+        }
+    
+    
     }
-
-
 }

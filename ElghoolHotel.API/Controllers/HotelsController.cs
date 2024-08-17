@@ -1,12 +1,8 @@
-﻿using ElghoolHotel.API.Core.Contract.Repository.UnitOfWork;
-using ElghoolHotel.API.Core.Contract.Service;
+﻿using ElghoolHotel.API.Core.Contract.Service;
 using ElghoolHotel.API.Core.DTO;
 using ElghoolHotel.API.Core.Helpers;
 using ElghoolHotel.API.Core.Models;
-using ElghoolHotel.API.Infrastructure.Repository.UnitOfWork;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using System.Linq;
 
 namespace ElghoolHotel.API.Controllers
@@ -17,17 +13,17 @@ namespace ElghoolHotel.API.Controllers
     [ApiController]
     public class HotelsController : ControllerBase
     {
-        private readonly IUnitOfWork unitOfWork;
+        private readonly IHotelService hotelService;
 
-        public HotelsController(IUnitOfWork unitOfWork)
+        public HotelsController(IHotelService hotelService)
         {
-            this.unitOfWork = unitOfWork;
+            this.hotelService = hotelService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<Result<IEnumerable<Hotel>>>> GetHotels()
+        public async Task<ActionResult<Result<IEnumerable<HotelDto>>>> GetHotels()
         {
-            var result = await unitOfWork.Hotels.GetAllAsync();
+            var result = await hotelService.GetAllHotelServiceAsync();
 
             if (!result.IsCompleteSuccessfully)
                 return StatusCode(result.ErrorMessages.StatusCode, result);
@@ -36,10 +32,10 @@ namespace ElghoolHotel.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Result<Hotel>>> EditHotel([FromBody] Hotel Hotel)
+        public async Task<ActionResult<Result<HotelDto>>> EditHotel(HotelDto hotelDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new Result<Hotel>
+                return BadRequest(new Result<HotelDto>
                 {
                     IsCompleteSuccessfully = false,
                     ErrorMessages = ErrorMessageUserConst.Custom(
@@ -48,7 +44,7 @@ namespace ElghoolHotel.API.Controllers
                     )
                 });
 
-            var result = await unitOfWork.Hotels.EditAsync(Hotel);
+            var result = await hotelService.EditHotelServiceAsync(hotelDto);
 
             if (!result.IsCompleteSuccessfully)
                 return StatusCode(result.ErrorMessages.StatusCode, result);
@@ -57,10 +53,10 @@ namespace ElghoolHotel.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Result<Hotel>>> AddHotel([FromBody] Hotel Hotel)
+        public async Task<ActionResult<Result<HotelDto>>> AddHotel(HotelDto hotelDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(new Result<Hotel>
+                return BadRequest(new Result<HotelDto>
                 {
                     IsCompleteSuccessfully = false,
                     ErrorMessages = ErrorMessageUserConst.Custom(
@@ -69,7 +65,7 @@ namespace ElghoolHotel.API.Controllers
                     )
                 });
 
-            var result = await unitOfWork.Hotels.InsertAsync(Hotel);
+            var result = await hotelService.AddHotelServiceAsync(hotelDto);
 
             if (!result.IsCompleteSuccessfully)
                 return StatusCode(result.ErrorMessages.StatusCode, result);
@@ -78,9 +74,9 @@ namespace ElghoolHotel.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Result<Hotel>>> DeleteHotel(int id)
+        public async Task<ActionResult<Result<HotelDto>>> DeleteHotel(int id)
         {
-            var result = await unitOfWork.Hotels.DeleteAsync(id);
+            var result = await hotelService.RemoveHotelServiceAsync(id);
 
             if (!result.IsCompleteSuccessfully)
                 return StatusCode(result.ErrorMessages.StatusCode, result);

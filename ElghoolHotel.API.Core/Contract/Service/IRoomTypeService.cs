@@ -1,9 +1,7 @@
-﻿
-
-using ElghoolHotel.API.Core.DTO;
+﻿using ElghoolHotel.API.Core.DTO;
 using ElghoolHotel.API.Core.Models;
 
-namespace ElghoolHotel.API.Core.Service
+namespace ElghoolHotel.API.Core.Contract.Service
 {
     public interface IRoomTypeService
     {

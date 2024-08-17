@@ -30,8 +30,8 @@ namespace ElghoolHotel.API.Models
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<City> Cities { get; set; }
-
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<RoomRequest> RoomRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

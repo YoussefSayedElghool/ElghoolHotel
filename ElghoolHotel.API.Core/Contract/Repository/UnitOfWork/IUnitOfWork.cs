@@ -16,7 +16,7 @@ namespace ElghoolHotel.API.Core.Contract.Repository.UnitOfWork
         ISliderRepository Sliders { get; }
         IReviewRepository Reviews { get; }
         ICityRepository Cities { get; }
-        IBagRepository Bags { get; }
+        IBookingRepository Bookings { get; }
         IRefreshTokenRepository RefreshTokens { get; }
 
         Result<bool> Save();

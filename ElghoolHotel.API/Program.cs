@@ -54,11 +54,14 @@ namespace ElghoolHotel.API
             builder.Services.AddScoped<ICityRepository, CityRepository>();
             builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<IBagRepository, BagRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
 
             // Service
             builder.Services.AddScoped<IRoomTypeService, RoomTypeService>();
+            builder.Services.AddScoped<IHotelService, HotelService>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
+
 
 
 

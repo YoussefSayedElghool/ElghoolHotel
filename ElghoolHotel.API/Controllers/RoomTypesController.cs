@@ -4,7 +4,6 @@ using ElghoolHotel.API.Core.Contract.Service;
 using ElghoolHotel.API.Core.DTO;
 using ElghoolHotel.API.Core.Helpers;
 using ElghoolHotel.API.Core.Models;
-using ElghoolHotel.API.Core.Service;
 using ElghoolHotel.API.Infrastructure.Repository.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -8,9 +8,9 @@ using ElghoolHotel.API.Core.Contract.Repository;
 
 namespace ElghoolHotel.API.Repository
 {
-    public class BagRepository : BaseRepository<Booking> , IBagRepository
+    public class BookingRepository : BaseRepository<Booking> , IBookingRepository
     {
-        public BagRepository(AppDbContext _context) : base(_context)
+        public BookingRepository(AppDbContext _context) : base(_context)
         {
         }
 

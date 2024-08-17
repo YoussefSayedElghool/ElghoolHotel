@@ -1,0 +1,73 @@
+﻿
+<script src="~/js/cookie.js"></script>
+
+
+<div id="booking-container" class="container my-5">
+    <h2 class="text-center">Your Bookings</h2>
+    <div id="booking-list" class="row">
+
+
+
+    </div>
+</div>
+
+<script type="module">
+    import { TokenHandel } from '/js/tokenhandel.js';
+
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:5181/api/Bookings',
+            type: 'GET',
+            dataType: 'json',
+            headers: {
+                'Authorization': 'Bearer ' + TokenHandel.getToken()
+            },
+            success: function (response) {
+                if (response.isCompleteSuccessfully) {
+                    console.log(response.data)
+                    displayBookings(response.data)
+                } else {
+                    alert('Failed to retrieve bookings: ' + response.errorMessages);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('An error occurred: ' + xhr.responseText);
+            }
+        });
+    });
+
+    function displayBookings(bookings) {
+        const bookingList = $('#booking-list');
+        bookingList.empty();
+
+        bookings.forEach(function (booking) {
+            const bookingCard = `
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header text-white bg-primary">
+                    Booking from ${formatDate(booking.checkInDate)} to ${formatDate(booking.checkOutDate)}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Room Requests</h5>
+                    <ul class="list-group list-group-flush">
+                        ${booking.roomRequests.map(room => `
+                        <li class="list-group-item">
+                            <strong>Hotel Name:</strong> ${room.hotelName}<br>
+                            <strong>Room Type:</strong> ${room.roomType}<br>
+                            <strong>Adults:</strong> ${room.adultNumber}<br>
+                            <strong>Children:</strong> ${room.childrenNumber}
+                        </li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        </div>`;
+
+            bookingList.append(bookingCard);
+        });
+    }
+
+    function formatDate(date) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(date).toLocaleDateString(undefined, options);
+    }
+</script>

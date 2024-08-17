@@ -27,13 +27,13 @@ namespace ElghoolHotel.API.Seeding
                     SeedRoomTypes(dbContext);
 
 
-                //if (!dbContext.Cities.Any())
-                //    SeedCities(dbContext);
-                
-                //if (!dbContext.Hotels.Any())
-                //    SeedHotels(dbContext);
+                if (!dbContext.Cities.Any())
+                    SeedCities(dbContext);
 
-               
+                if (!dbContext.Hotels.Any())
+                    SeedHotels(dbContext);
+
+
 
                 dbContext.SaveChanges();
             }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,6 +19,7 @@ namespace ElghoolHotel.MVC.Controllers
         }
 
 
+        [Authorize]
         public IActionResult Profile()
         {
             return View();

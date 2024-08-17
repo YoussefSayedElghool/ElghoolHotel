@@ -96,7 +96,6 @@
                 reviews.forEach(function (review) {
                     testimonialContent += `
                         <div class="col-md-4 style-3">
-                            <div class="tour-item ">
                                     <div class="tour-desc bg-white review-card">
                                     <div class="tour-text color-grey-3 text-center">
                                         &ldquo;${review.userReview}&rdquo;
@@ -111,7 +110,6 @@
                                         Engineer
                                     </div>
                                 </div>
-                            </div>
                         </div>`;
                 });
                 $('#testimonial-content').html(testimonialContent);

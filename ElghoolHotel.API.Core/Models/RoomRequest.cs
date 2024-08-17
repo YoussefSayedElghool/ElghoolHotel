@@ -5,8 +5,8 @@ namespace ElghoolHotel.API.Core.Models
     public class RoomRequest
     {
         public int RoomRequestId { get; set; }
-        public int MaxAdultNumber { get; set; }
-        public int MaxChildrenNumber { get; set; }
+        public int AdultNumber { get; set; }
+        public int ChildrenNumber { get; set; }
 
         [ForeignKey("Hotel")]
         public int HotelId { get; set; }
