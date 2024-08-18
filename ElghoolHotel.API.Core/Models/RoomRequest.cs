@@ -14,9 +14,11 @@ namespace ElghoolHotel.API.Core.Models
         
         [ForeignKey("RoomType")]
         public int RoomTypeId { get; set; }
-        public virtual RoomType RoomType { get; set; }
-
-        public virtual List<Booking> Bags { get; set; }
+        public virtual RoomType RoomType { get; set; }        
+        
+        [ForeignKey("Booking")]
+        public int BookingId { get; set; }
+        public virtual Booking Booking { get; set; }
 
     }
 }
