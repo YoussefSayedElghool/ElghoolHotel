@@ -4,8 +4,9 @@
 ### Demo 
 https://github.com/user-attachments/assets/4b686d28-d32f-40e8-92e1-d3b4d8fe0892
 
+---
 
-To include the database schema in a README file, here’s how you can structure the tables for better readability:
+![Database digram drawio](https://github.com/user-attachments/assets/db39514a-66cf-4322-801c-a27293607425)
 
 ---
 
