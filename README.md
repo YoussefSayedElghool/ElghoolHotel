@@ -87,14 +87,8 @@ To include the database schema in a README file, here’s how you can structure 
 | `Name`        | nvarchar(450)  | NOT NULL PRIMARY KEY |
 | `Value`       | nvarchar(max)  | NULL |
 
-#### 9. `BookingRoomRequest`
 
-| Column Name                | Data Type | Constraints |
-|----------------------------|-----------|-------------|
-| `BagsBookingId`            | int       | NOT NULL PRIMARY KEY |
-| `RoomRequestsRoomRequestId`| int       | NOT NULL PRIMARY KEY |
-
-#### 10. `Bookings`
+#### 9. `Bookings`
 
 | Column Name  | Data Type       | Constraints |
 |--------------|-----------------|-------------|
@@ -103,14 +97,14 @@ To include the database schema in a README file, here’s how you can structure 
 | `CheckOutDate`| datetime2(7)   | NOT NULL |
 | `UserId`     | nvarchar(450)   | NOT NULL |
 
-#### 11. `Cities`
+#### 10. `Cities`
 
 | Column Name | Data Type    | Constraints |
 |-------------|--------------|-------------|
 | `CityId`    | int          | IDENTITY(1,1) NOT NULL PRIMARY KEY |
 | `Name`      | nvarchar(max)| NOT NULL |
 
-#### 12. `Hotels`
+#### 11. `Hotels`
 
 | Column Name | Data Type    | Constraints |
 |-------------|--------------|-------------|
@@ -118,7 +112,7 @@ To include the database schema in a README file, here’s how you can structure 
 | `Name`      | nvarchar(max)| NOT NULL |
 | `CityId`    | int          | NOT NULL |
 
-#### 13. `RefreshTokens`
+#### 12. `RefreshTokens`
 
 | Column Name  | Data Type       | Constraints |
 |--------------|-----------------|-------------|
@@ -129,7 +123,7 @@ To include the database schema in a README file, here’s how you can structure 
 | `RevokedOn`      | datetime2(7) | NULL |
 | `UserId`         | nvarchar(450)| NOT NULL |
 
-#### 14. `Reviews`
+#### 15. `Reviews`
 
 | Column Name  | Data Type      | Constraints |
 |--------------|----------------|-------------|
@@ -137,7 +131,7 @@ To include the database schema in a README file, here’s how you can structure 
 | `UserImageUrl`| nvarchar(max) | NOT NULL |
 | `UserReview` | nvarchar(max)  | NOT NULL |
 
-#### 15. `RoomRequests`
+#### 16. `RoomRequests`
 
 | Column Name     | Data Type | Constraints |
 |-----------------|-----------|-------------|
@@ -146,8 +140,9 @@ To include the database schema in a README file, here’s how you can structure 
 | `ChildrenNumber`| int       | NOT NULL |
 | `HotelId`       | int       | NOT NULL |
 | `RoomTypeId`    | int       | NOT NULL |
+| `BookingId`     | int       | NOT NULL |
 
-#### 16. `Rooms`
+#### 17. `Rooms`
 
 | Column Name       | Data Type    | Constraints |
 |-------------------|--------------|-------------|
@@ -159,14 +154,14 @@ To include the database schema in a README file, here’s how you can structure 
 | `HotelId`         | int          | NOT NULL |
 | `RoomTypeId`      | int          | NOT NULL |
 
-#### 17. `RoomTypes`
+#### 18. `RoomTypes`
 
 | Column Name   | Data Type    | Constraints |
 |---------------|--------------|-------------|
 | `RoomTypeId`  | int          | IDENTITY(1,1) NOT NULL PRIMARY KEY |
 | `Type`        | nvarchar(max)| NOT NULL |
 
-#### 18. `Sliders`
+#### 19. `Sliders`
 
 | Column Name | Data Type    | Constraints |
 |-------------|--------------|-------------|
